@@ -1,0 +1,21 @@
+.img {
+    max-width: 50px;
+    height: auto;
+}
+
+.back{
+    min-height: 100vh;
+    background-image: url("back.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.search {
+    align-self: center;
+}
+
+.sidebar {
+    background-color: blue;
+    z-index: 10;
+}
+
