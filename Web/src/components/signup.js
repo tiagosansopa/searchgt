@@ -26,11 +26,12 @@ class SignUp extends React.Component{
         });
 
         const content = await rawResponse.json();
-
+        console.log(content);
         if(content==1){
             window.alert("Usuario registrado exitosamente");
             window.location.href = "/sign-in";
         }
+        
         else{
             window.alert("Usuario ya existente");
         }
