@@ -5,6 +5,7 @@ import swal from "sweetalert";
 import Select from 'react-select';
 import GoogleMapReact from 'google-map-react';
 import Locationpin from "./locationpin"
+import axios from 'axios';
 
 const Profile = (props) => {
 
@@ -87,20 +88,19 @@ const Profile = (props) => {
 
   async function handleSubmit (event) {
     event.preventDefault();
+    
     const data = new FormData(event.target);
     const send = {};
+    data.append('file', event.target.imagen.files[0]);
     
     for (var [key, value] of data.entries()) { 
-        send[key] = value;
+      send[key] = value;
     }
+
     send["ide"] = localStorage.getItem("eID");
-    let reader = new FileReader();
-    console.log("beforeglow",send["imagen"]);
-    reader.readAsDataURL(send["imagen"]);
-    reader.onload = async () => {
-      send["imagen"] = reader.result
-      console.log("afterglow",reader.result);
-      const rawResponse = await fetch('http://localhost:3001/company/product', {
+    delete send.imagen;
+
+    const rawResponse2 = await fetch('http://localhost:3001/company/product', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -108,15 +108,33 @@ const Profile = (props) => {
       },
       body: JSON.stringify(send)
     });
-      const content = await rawResponse.json();
-      if(content.status==1){
+    const content = await rawResponse2.json();
+    
+    console.log("Antes subir imagen");
+
+    
+    axios.post('http://localhost:3001/product/img', data, {
+      onUploadProgress: (ProgressEvent) => {
+          let progress = Math.round(
+          ProgressEvent.loaded / ProgressEvent.total * 100) + '%';
+      }
+  }).then(res => {
+      console.log(res);
+  }).catch(err => console.log(err))
+
+
+    console.log("despues subir imagen");
+    
+    if(content.status==1){
         swal("Insertado", send.nombre+ " "+ send.precio+ " "+ send.color, "success");
     }
     else{
         swal("Error en correo o contraseña", send.nombre+ " "+ send.precio+ " "+ send.color, "error");
     }
+
+
     document.getElementById("create-course-form").reset();
-    };
+    
     
   }
 

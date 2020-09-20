@@ -1,7 +1,7 @@
 import React, { useState,useEffect }  from 'react';
 import one from '../1.jpg';
 import style from './busqueda.module.css'
-import {Row,Col} from 'react-bootstrap'
+import {Row,Col,ButtonGroup,Button} from 'react-bootstrap'
 
 const Busqueda = () => {
     const getCat = async () => {
@@ -141,6 +141,11 @@ const Busqueda = () => {
         <Col xs={2} sm={2} md={2} lg={2} xl={2} className={style.busquedawrapper}>
             <h5>Resultados</h5>
             <div className={style.busquedainner}>
+                <ButtonGroup aria-label="Basic example">
+                  <Button variant="secondary">Left</Button>
+                  <Button variant="secondary">Middle</Button>
+                  <Button variant="secondary">Right</Button>
+                </ButtonGroup>
                 <h5>Nombre</h5>
                 <input name="search" onChange={handleChange}></input>
                 <h5>Marca</h5>

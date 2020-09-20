@@ -144,7 +144,7 @@ const getProduct = (request, response) => {
   const postProduct = (request, response) => {
     //console.log("afterglow",request.body.imagen);
     const insert = {
-      text: 'INSERT INTO "PRODUCTO"("ID_EMPRESA","NOMBRE","ID_MARCA","ID_CATEGORIA","PRECIO","ID_UBICACION","RATING","COLOR","IMAGEN") VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+      text: 'INSERT INTO "PRODUCTO"("ID_EMPRESA","NOMBRE","ID_MARCA","ID_CATEGORIA","PRECIO","ID_UBICACION","RATING","COLOR") VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
       values: [request.body.ide,
                request.body.nombre,
                request.body.idmarca,
@@ -152,8 +152,7 @@ const getProduct = (request, response) => {
                request.body.precio,
                request.body.idubicacion,
                0,
-               request.body.color,
-               request.body.imagen
+               request.body.color
               ]
     }
     pool.query(insert, (error, results) => {
@@ -201,6 +200,45 @@ const getProduct = (request, response) => {
   }
 
 
+  const postProductImg = (request, response) => {
+    console.log("paso 1");
+    if (!request.files) {
+      return response.status(500).json({ msg: "file is not found" })
+    }
+
+    const query = {
+      text: 'SELECT "ID" FROM "PRODUCTO" ORDER BY "ID" DESC LIMIT 1'
+    }
+    let id;
+    pool.query(query, (error, results) => {
+      if (error) {
+        throw error
+      }
+      if(results.rowCount>0){
+        id = results.rows[0].ID
+        console.log(id);
+
+        console.log("paso 2 "+id);
+
+        const myFile = request.files.file;
+        //  mv() method places the file inside public directory
+        //myFile.mv(`${__dirname}/public/${myFile.name}`, function (err) {
+        myFile.mv(`${__dirname}/public/img`+id+`.jpg`, function (err) {
+        if (err) {
+            console.log(err)
+            return response.status(500).json({ msg: "Error occured" });
+        }
+        // returing the response with file path and name
+        return response.json({name: myFile.name, path: `/${myFile.name}`});
+  });
+
+      }
+      else{
+        response.status(200).json(results.rows)
+      }
+    })
+  }
+
   module.exports = {
     getUsers,
     getProduct,
@@ -212,5 +250,6 @@ const getProduct = (request, response) => {
     postProduct,
     postUbicaciones,
     postEmpresaNew,
-    postEmpresaChangePassword
+    postEmpresaChangePassword,
+    postProductImg
   }

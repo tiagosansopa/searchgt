@@ -6,6 +6,14 @@
     padding-right: 2%;
     flex-direction: column;
   }
+
+  .product > img { 
+    max-width: 50%;
+    max-height: 50%;
+    height: auto;
+    width: auto;
+  }
+
   .profilewrapper {
     padding-top: 10%;
     display: flex;
@@ -37,7 +45,8 @@
     justify-content: space-around;
     background: white;
     align-items: center;
-    min-width: 20%;
+    min-width: 50px;
+    max-width: 100px;
 }
 
 .container{
