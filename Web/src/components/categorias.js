@@ -1,5 +1,5 @@
 import React from 'react';
-import two from '../2.jpg';
+import two from '../back.jpg';
 import style from './category.module.css'
 
 const Categorias = ({nombre}) => {
@@ -9,7 +9,7 @@ const Categorias = ({nombre}) => {
     return(
         <div className={style.category} onClick={handleClick}>
             <h3>{nombre}</h3>
-            <img src={two} alt=""></img>
+            <img className={style.img}  src={two} alt=""></img>
         </div>
     )
 }

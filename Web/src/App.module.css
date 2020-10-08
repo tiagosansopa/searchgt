@@ -5,8 +5,9 @@
 
 .back{
     min-height: 100vh;
+    width: 100%;
     background-image: url("back.jpg");
-    background-repeat: no-repeat;
+    background-repeat: round;
     background-attachment: fixed;
 }
 

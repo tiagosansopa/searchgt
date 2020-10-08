@@ -8,4 +8,11 @@
     background: white;
     align-items: center;
     min-width: 40%;
+    max-width: 150px;
+    cursor: pointer;
 }
+
+.img { 
+    margin: 10px 5px 5px 5px;
+    max-width: 100%;
+  }

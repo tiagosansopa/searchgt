@@ -39,6 +39,8 @@ app.post('/product/img',db.postProductImg);
 
 app.post('/company/login',db.postLoginEmpresa);
 app.post('/company/product',db.postProduct);
+app.post('/company/productlist',db.postProductoByEmpresa);
+app.post('/company/productdelete',db.deleteProduct);
 app.post('/company/new',db.postEmpresaNew);
 app.post('/company/password',db.postEmpresaChangePassword);
 app.post('/company/ubicacion',db.postUbicaciones);

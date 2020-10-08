@@ -13,6 +13,7 @@ const Profile = (props) => {
     let id = localStorage.getItem("eID");
     seteId(id);
     getUbicacion();
+    getProducts();
   }
 
   const location = {
@@ -43,6 +44,32 @@ const Profile = (props) => {
     console.log("hola",capitals);
     setUbicacion(capitals);
   }
+
+  const getProducts= async () => {
+    const send = {};
+    send['eID'] = localStorage.getItem("eID");
+    const rawResponse = await fetch('http://localhost:3001/company/productlist', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(send)
+  });
+    const data = await rawResponse.json();
+    //let capitals = data.map(function(obj) { 
+    //  obj['value'] = obj['ID']; 
+    //  obj['label'] = obj['NOMBRE']; 
+    //  delete obj['ID']; 
+    //  delete obj['NOMBRE']; 
+    //  return obj; 
+    //}); 
+    console.log("productLIST",data);
+    setProducts(data);
+  }
+
+
+
 
 
   const getMarca = async () => {
@@ -77,7 +104,7 @@ const Profile = (props) => {
   const [marcas, setMarca] = useState([]);
   const [eId, seteId] = useState(0);
   const [ubicaciones, setUbicacion] = useState([]);
-  
+  const [products, setProducts] = useState([]);
 
   useEffect (()=>{
     getMarca();
@@ -136,6 +163,27 @@ const Profile = (props) => {
     document.getElementById("create-course-form").reset();
     
     
+  }
+
+  async function handleDelete (n,m) {
+    swal("Desea eliminar",  n+m+" ?", "info");
+
+    const send = {};
+    send['eID'] = localStorage.getItem("eID");
+    send['pID'] = m;
+    const rawResponse = await fetch('http://localhost:3001/company/productdelete', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(send)
+  });
+    const data = await rawResponse.json();
+    console.log("productLIST",data);
+
+
+    getProducts();
   }
 
   async function handleSubmitEmpresa (event) {
@@ -219,6 +267,9 @@ const Profile = (props) => {
             <Nav.Item>
               <Nav.Item>
                 <Nav.Link eventKey="second">Agregar Producto</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="sev">Listar Productos</Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link eventKey="fifth">Agregar Ubicacion</Nav.Link>
@@ -339,6 +390,25 @@ const Profile = (props) => {
                   </div>
                   <button type="submit" className="btn btn-primary btn-block">Cambiar password</button>
               </form>
+            </Tab.Pane>
+            <Tab.Pane eventKey="sev">
+              <h3>Listar productos</h3>  
+              <div>
+                {products.map(el => (
+                    <Row>
+                      <Col sm={3}>
+                        <h3>{el.NOMBRE}</h3>
+                      </Col>  
+                      <Col sm={3}>
+                        <button>+</button> 
+                      </Col>   
+                      <Col sm={3}>
+                      <button onClick={(e)=> handleDelete(el.NOMBRE,el.ID,e)}>x</button>
+                      </Col> 
+                      
+                    </Row>
+                ))}
+              </div>
             </Tab.Pane>
           </Tab.Content>
         </Col>

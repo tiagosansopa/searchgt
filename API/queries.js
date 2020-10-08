@@ -28,6 +28,21 @@ const getProduct = (request, response) => {
     })
   }
 
+  const deleteProduct = (request, response) => {
+    const query = {
+      text: 'DELETE FROM "PRODUCTO" WHERE "ID"=$1',
+      values: [request.body.pID],
+    }
+    pool.query(query, (error, results) => {
+      if (error) {
+        console.log(error);
+        throw error
+      }
+      //console.log(results.rows);
+      response.status(200).json(results.rows)
+    })
+  }
+
   const getCategory = (request, response) => {
     pool.query('SELECT * FROM "CATEGORIA" ORDER BY "ID" ASC', (error, results) => {
       if (error) {
@@ -124,6 +139,27 @@ const getProduct = (request, response) => {
     //console.log("Ubicaciones",request.body.eID)
     const query = {
       text: 'SELECT * FROM "UBICACION" WHERE "ID_EMPRESA" =  $1',
+      values: [request.body.eID],
+    }
+
+    pool.query(query, (error, results) => {
+      if (error) {
+        throw error
+      }
+      if(results.rowCount>0){
+        response.status(200).json(results.rows)
+      }
+      else{
+        response.status(200).json(results.rows)
+      }
+    })
+  }
+
+  const postProductoByEmpresa = (request, response) => {
+    //console.log("Ubicaciones",request.body.eID)
+    const query = {
+      text: 'SELECT p."ID", ENCODE(p."IMAGEN",\x27base64\x27) as "IMAGEN" , p."NOMBRE",a."MARCA", e."NOMBRE" AS "EMPRESA", c."NOMBRE" AS "CATEGORIA", p."PRECIO",p."RATING",p."COLOR",u."NOMBRE"  AS "UBICACION" FROM "PRODUCTO" AS p inner join "EMPRESA" AS e on p."ID_EMPRESA"=e."ID" inner join "MARCA" AS a on a."ID" = p."ID_MARCA" inner join "CATEGORIA" AS c on p."ID_CATEGORIA" = c."ID" inner join "UBICACION" AS u on p."ID_UBICACION" = u."ID" \
+      WHERE  p."ID_EMPRESA" =  $1 ORDER BY p."ID" ASC ',
       values: [request.body.eID],
     }
 
@@ -251,5 +287,7 @@ const getProduct = (request, response) => {
     postUbicaciones,
     postEmpresaNew,
     postEmpresaChangePassword,
-    postProductImg
+    postProductImg,
+    postProductoByEmpresa,
+    deleteProduct
   }

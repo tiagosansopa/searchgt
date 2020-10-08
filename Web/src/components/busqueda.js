@@ -1,5 +1,5 @@
 import React, { useState,useEffect }  from 'react';
-import one from '../1.jpg';
+import one from '../back.jpg';
 import style from './busqueda.module.css'
 import {Row,Col,ButtonGroup,Button} from 'react-bootstrap'
 

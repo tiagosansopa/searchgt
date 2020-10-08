@@ -1,13 +1,20 @@
 import React from 'react';
-import one from '../1.jpg';
+import one from '../back.jpg';
 import style from './product.module.css'
+import swal from "sweetalert";
 
-const Producto = ({id, nombre, precio,imagen}) => {
+const Producto = ({id, nombre, precio,marca,color,ubicacion}) => {
+
+    function handleClick(){
+        swal("Insertado", id + " " + nombre + " " + precio + " " + marca+ " " +color+ " " +ubicacion, "info");
+      }
+
+
     return(
-        <div className={style.product} >
+        <div className={style.product} onClick={handleClick} >
             <h3>{nombre}</h3>
-            <p> Q {precio}</p>
-            <img className={style.imagens} src={`http://localhost:3001/static/img${id}.jpg`} alt={nombre}></img>
+            <p>Precio: Q {precio}</p>
+            <img className={style.img} src={`http://localhost:3001/static/img${id}.jpg`} alt={nombre}></img>
         </div>
     )
 }
